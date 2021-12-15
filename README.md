@@ -1,3 +1,8 @@
+#### Notes 
+   1. Changed rails/webpacker package to version 5.4.3 - previous verions conflicted with latest version of node-sass/M1 Macbook Apple Silicon, removed yarn.lock and re-ran yarn.
+   2. Added gem 'msgpack' to gemfile to stop conflicting issues with the dependency not being downloaded
+   3. Went overtime due to problems with Docker/Gems
+
 # NetEngine Ruby on Rails Technical Challenge
 
 ## InstaClone
@@ -26,7 +31,7 @@ You must have Docker Desktop installed for this to work, as the environment is d
 1. Once that has completed, type `docker compose up db -d`
 1. Once that has completed, type `docker compose run --rm web bundle exec rails db:setup`
 1. Once that has completed, type `docker compose up -d`
-1. In your browser, navigate to `https://localhost:3000`
+1. In your browser, navigate to `localhost:3000`
 
 ### Additional information:
 1. There is no CSS and JS included currently
@@ -43,7 +48,3 @@ Either
 1. Package up your code in a zip file
 
 Please supply a link or the zip file the ben@netengine.com.au
-
-#### Notes 
-   1. Changed rails/webpacker package to version 5.4.3 - previous verions conflicted with latest version of node-sass/M1 Macbook Apple Silicon, removed yarn.lock and re-ran yarn.
-   2. Added gem 'msgpack' to gemfile to stop conflicting issues with the dependency not being downloaded
