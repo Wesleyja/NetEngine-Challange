@@ -1,0 +1,53 @@
+<div>
+  <h3><%= @user.username %>'s profile</h3>
+
+  <p>
+    <% if current_user&.eql? @user %>
+      <%= link_to "Upload photos", new_photo_path %>
+    <% end %>
+  </p>
+
+  <% if current_user&.eql? @user %>
+    <h4>
+      Incoming Friend Requests
+      <% if @user.friend_requests_as_receiver.empty? %>
+      <%= "Currently no incoming friend requests" %>
+      <% end %>
+      <% @user.friend_requests_as_receiver.each do |request| %>
+        <% if request.response == 'pending'  %>
+          <%= link_to request.requestor.username, profile_path(request.requestor.username) %>
+          <%= link_to 'Accept', friend_requests_update_path(response: 'Accept', request: request.id) %>
+          <%= link_to 'Decline', friend_requests_update_path(response: 'Decline', request: request.id) %>
+        <% end %>
+      <% end %>
+    </h4>
+
+    <% else %>
+      <% if (current_user.friends.include?(@user)) || !(FriendRequest.previous_requests(@user.id, current_user.id).empty?) %>
+        <%= "Already friends or request is pending" %>
+      <% else %>
+        <%= link_to 'Add Friend', friend_requests_create_path(receiver: @user.id)  %>
+      <% end %>
+  <% end %>  
+
+  <div>
+    <h3>Current Friends</h3>
+    <% @user.friends.each do |friend| %>
+      <h5>
+        <%= link_to friend.username, profile_path(friend.username)  %>
+      </h5>
+    <% end %>
+  </div>
+  
+
+
+  <% if @user.photos.empty? %>
+    <p>There is still no photos to display.</p>
+  <% else %>
+    <% @user.photos.each do |photo| %>
+      <%= link_to photo_path(photo) do %>
+        <%= image_tag photo.photo.variant(resize: '200', gravity: 'Center', crop: '200x200+0+0') %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
