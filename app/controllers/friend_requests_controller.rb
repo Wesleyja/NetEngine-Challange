@@ -28,13 +28,14 @@ class FriendRequestsController < ApplicationController
       )
 
       if friendship.valid?
+        @friend_request.update(response: 'accepted')
         friendship.save
+      else 
+        @friend_request.update(response: 'declined')
       end
-      
-      @friend_request.destroy
 
     elsif params['response'] == 'Decline'
-      @friend_request.destroy
+      @friend_request.update(response: 'declined')
     end
 
     redirect_to profile_path(current_user.username)

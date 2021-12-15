@@ -14,7 +14,7 @@
       <%= "Currently no incoming friend requests" %>
       <% end %>
       <% @user.friend_requests_as_receiver.each do |request| %>
-        <% if request.response == 'pending'  %>
+        <% if request.response == 'pending' %>
           <%= link_to request.requestor.username, profile_path(request.requestor.username) %>
           <%= link_to 'Accept', friend_requests_update_path(response: 'Accept', request: request.id) %>
           <%= link_to 'Decline', friend_requests_update_path(response: 'Decline', request: request.id) %>
@@ -23,10 +23,12 @@
     </h4>
 
     <% else %>
-      <% if (current_user.friends.include?(@user)) || !(FriendRequest.previous_requests(@user.id, current_user.id).empty?) %>
-        <%= "Already friends or request is pending" %>
+      <% if current_user.friend_requests_as_requestor.where("response != ?", 'pending').empty? && !(current_user.friends.include?(@user)) %>
+      <%= link_to 'Add Friend', friend_requests_create_path(receiver: @user.id)  %>
+      <% elsif (current_user.friends.include?(@user)) %>
+      <%= "Already Friends" %>
       <% else %>
-        <%= link_to 'Add Friend', friend_requests_create_path(receiver: @user.id)  %>
+      <%= 'Declined or Pending request' %>
       <% end %>
   <% end %>  
 
